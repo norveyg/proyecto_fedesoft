@@ -39,9 +39,11 @@ export class MapPage {
   }
 
   addMarker(coord){
-    let infowindow = new google.map.infoWindow({
+    console.log("ubicado en: "+coord.lat);
+    let infowindow = new google.maps.InfoWindow({
       content: "ubicado en: "+coord.lat
           });
+          console.log("ubicado en: "+coord.lat);
     let internalMarker= new google.maps.Marker({
       map: this.map,
       draggable: true,
