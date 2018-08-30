@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 /**
@@ -8,13 +8,20 @@ import { Injectable } from '@angular/core';
 export class Api {
   /*url: string = 'https://example.com/api/v1';*/
   url: String ='https://fedesoft-class.herokuapp.com';
+  private token;
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient, 
+  public headers:HttpHeaders) {
+    let credentials = JSON.parse(localStorage.getItem('TOKEN') || '{}');
+    this.token=credentials.token;
+    this.headers.set('Authorization','Bearer '+this.token);
   }
 
   get(endpoint: string, params?: any, reqOpts?: any) {
     if (!reqOpts) {
       reqOpts = {
+        //params: new HttpParams()
+        headers:{'Authorization':'Bearer'+this.token},
         params: new HttpParams()
       };
     }
@@ -31,6 +38,7 @@ export class Api {
   }
 
   post(endpoint: string, body: any, reqOpts?: any) {
+    reqOpts.headers = {'Authorization':'Bearer'+this.token};
     return this.http.post(this.url + '/' + endpoint, body, reqOpts);
   }
 
